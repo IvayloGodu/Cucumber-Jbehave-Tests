@@ -1,0 +1,111 @@
+Meta:
+@adf
+@ri
+@checkCededPremiumsAfterPolicyChangeAnnex
+@RB-18765
+
+Narrative:
+As a back-office clerk
+I want to change cover premium for one of the two covers and add a new cover for an Auto Casco policy
+So that I can check the new ceded premiums values in the Ceded premiums.
+PREREQUISITES:
+Created treaties 1 QSP, 1RXL, 1 EXL and use the policy from operational data (RI.Annex.Policy.PolicyNo=ATRICASCOPOLICYCHANGE).
+
+Lifecycle:
+Before:
+Scope: STORY
+Given Home breadcrumb is displayed
+When Click on Insurance operations in navigation menu
+And Click on Policies in navigation menu
+And Click on Annexes in navigation menu
+And Click on Policy Change in navigation menu
+Then Policy Change breadcrumb is displayed
+
+Scenario: Change cover premium and add new cover with annex for an Auto Casco Policy and check the new Premium values in Ceded Premiums
+Given Policy Change breadcrumb is displayed
+When Enter value RI.Annex.Policy.PolicyNo in field Right.Navigation.SearchPolicy.No.InputText and press key enter
+And Table Search.PolicySearch.Result.Table has 1 rows
+And Row 1 in table Search.PolicySearch.Result.Table contains value RI.Annex.Policy.PolicyNo in column Policy No
+And Select row 1 in Search.PolicySearch.Result.Table table
+And Click on Next button
+And Policy Change breadcrumb is displayed
+And 0 Bound Annexes header is displayed
+And Copy value from xpath.PolicyChange.AnnexGeneral.InsrBegin.TextField to insrBegin
+And Click on xpath.Annex.CreateAnnex.Button button
+And Element xpath.Annex.OpenForChange.PopUp is present
+And Enter value insrBegin in field xpath.Annex.StartDate.TextField
+And Click on xpath.AnnexOpenForChange.Ok.Button button
+And Click on xpath.Annex.Reason.Button button
+And Select Coverage extension from xpath.Annex.Reasons.Dropdown dropdown
+And Click on Annex.AddReason.Button button
+And Click on Next button
+And Current FES step is Policy General
+And Click on Coverages train stop
+And Current FES step is Coverages
+And Table Coverages.InsuredObject.Result.Table has 1 rows
+And Table Coverages.Cover.Result.Table has 2 rows
+And Click on xpath.Coverages.Cover.Table.AddCover.Button button
+And Element xpath.Coverages.Cover.PopUp.Header is present
+And Get row number in table Coverages.Cover.Popup.Result.Table where Cover Name column contains value Vandalism
+And Select row rowNo in Coverages.Cover.Popup.Result.Table table and click on Coverages.Cover.Popup.ApplyCover.Checkbox checkbox
+And Click on xpath.Coverages.Cover.Popup.Save.Button button
+And Press escape
+And Table Coverages.Cover.Result.Table has 3 rows
+And Get row number in table Coverages.Cover.Result.Table where Cover Name column contains value Road accident
+And Row rowNo in table Coverages.Cover.Result.Table contains value Cover.Amount.RoadAccident in column Premium
+And I type 80 in field xpath.Cover.Tariff.Percent.Input
+And Select row with value Vandalism from Cover Name column in Coverages.Cover.Result.Table table
+And Select Percent (annual) from xpath.Coverages.Cover.ManualPremiumDimension.Dropdown dropdown
+And I type 70 in field xpath.Cover.Tariff.Percent.Input
+And Click on xpath.Main.Buttons.Premium.Button button
+And Get row number in table Coverages.Cover.Result.Table where Cover Name column contains value Vandalism
+And Row rowNo in table Coverages.Cover.Result.Table contains value 7,000,000 in column Premium
+And Column Risk State in table Coverages.Cover.Result.Table contains value 0 Registered in 3 of rows
+And Column Risk State in table Coverages.Cover.Result.Table contains value 112 Annexed in 1 of rows
+And Click on Annex General train stop
+And Annex General header is displayed
+And Click on xpath.Confirm.Button button
+And Click on xpath.Apply.Button button
+And 1 Bound Annexes header is displayed
+And Click on Insurance operations in navigation menu
+And Click on Reinsurance in navigation menu
+And Click on Ceded Premiums in navigation menu
+And Ceded Premiums breadcrumb is displayed
+And Enter value RI.Annex.Policy.PolicyNo in field xpath.Right.Navigation.Policy.No.Input and press key enter
+And Enter value DUE in field xpath.CededPremiums.PremiumType.Input and press key enter
+And Click on xpath.Right.Navigation.Search.Button button
+And Column Status in table CededPremiums.Table contains value NORMAL in 12 of rows
+And Column Status in table CededPremiums.Table contains value RICHECK in 18 of rows
+And Enter value 7,000,000 in field xpath.CededPremiums.DirectPremium.Input and press key enter
+And Click on xpath.Right.Navigation.Search.Button button
+And Table CededPremiums.Table has 6 rows
+And Column Direct Premium in table CededPremiums.Table contains value 7,000,000 in 6 of rows
+Then Get row number in table CededPremiums.Table where Ri Clause Type column contains value SP
+And Row rowNo in table CededPremiums.Table contains value VANDALISM.CASCO.RI.Premium.SP in column RI Premium
+And Get row number in table CededPremiums.Table where Ri Clause Type column contains value QS
+And Row rowNo in table CededPremiums.Table contains value VANDALISM.CASCO.RI.Premium.QS in column RI Premium
+And Get row number in table CededPremiums.Table where Ri Clause Type column contains value REXL and Ri Adjustment Rate column contains value RiAdjustmentRate.REXL.1
+And Row rowNo in table CededPremiums.Table contains value VANDALISM.CASCO.RI.Premium.REXL.1 in column RI Premium
+And Get row number in table CededPremiums.Table where Ri Clause Type column contains value REXL and Ri Adjustment Rate column contains value RiAdjustmentRate.REXL.2
+And Row rowNo in table CededPremiums.Table contains value VANDALISM.CASCO.RI.Premium.REXL.2 in column RI Premium
+And Get row number in table CededPremiums.Table where Ri Clause Type column contains value EXL and Ri Adjustment Rate column contains value RiAdjustmentRate.EXL.1
+And Row rowNo in table CededPremiums.Table contains value VANDALISM.CASCO.RI.Premium.EXL.1 in column RI Premium
+And Get row number in table CededPremiums.Table where Ri Clause Type column contains value EXL and Ri Adjustment Rate column contains value RiAdjustmentRate.EXL.2
+And Row rowNo in table CededPremiums.Table contains value VANDALISM.CASCO.RI.Premium.EXL.2 in column RI Premium
+And Enter value 8,000,000 in field xpath.CededPremiums.DirectPremium.Input and press key enter
+And Click on xpath.Right.Navigation.Search.Button button
+And Table CededPremiums.Table has 6 rows
+And Column Direct Premium in table CededPremiums.Table contains value 8,000,000 in 6 of rows
+And Get row number in table CededPremiums.Table where Ri Clause Type column contains value SP
+And Row rowNo in table CededPremiums.Table contains value ROADACC2.CASCO.RI.Premium.SP in column RI Premium
+And Get row number in table CededPremiums.Table where Ri Clause Type column contains value QS
+And Row rowNo in table CededPremiums.Table contains value ROADACC2.CASCO.RI.Premium.QS in column RI Premium
+And Get row number in table CededPremiums.Table where Ri Clause Type column contains value REXL and Ri Adjustment Rate column contains value RiAdjustmentRate.REXL.1
+And Row rowNo in table CededPremiums.Table contains value ROADACC2.CASCO.RI.Premium.REXL.1 in column RI Premium
+And Get row number in table CededPremiums.Table where Ri Clause Type column contains value REXL and Ri Adjustment Rate column contains value RiAdjustmentRate.REXL.2
+And Row rowNo in table CededPremiums.Table contains value ROADACC2.CASCO.RI.Premium.REXL.2 in column RI Premium
+And Get row number in table CededPremiums.Table where Ri Clause Type column contains value EXL and Ri Adjustment Rate column contains value RiAdjustmentRate.EXL.1
+And Row rowNo in table CededPremiums.Table contains value ROADACC2.CASCO.RI.Premium.EXL.1 in column RI Premium
+And Get row number in table CededPremiums.Table where Ri Clause Type column contains value EXL and Ri Adjustment Rate column contains value RiAdjustmentRate.EXL.2
+And Row rowNo in table CededPremiums.Table contains value ROADACC2.CASCO.RI.Premium.EXL.2 in column RI Premium
+And Click on GlobalClose.Button button

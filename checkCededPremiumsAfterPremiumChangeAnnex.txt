@@ -1,0 +1,91 @@
+checkCededPremiumsAfterPremiumChangeAnnex
+Narrative:
+As a back-office clerk
+I want to change the cover premiums for an Auto Casco policy
+So that I can check the values of the newly ceded premiums in the Ceded premiums.
+
+Lifecycle:
+Before:
+Scope: STORY
+Given Home breadcrumb is displayed
+When Click on Insurance operations in navigation menu
+And Click on Policies in navigation menu
+And Click on Annexes in navigation menu
+And Click on Premium Change in navigation menu
+And Enter value RI.Annex.Premium.PolicyNo in field Right.Navigation.SearchPolicy.No.InputText and press key enter
+And Table Search.PolicySearch.Result.Table has 1 rows
+And Row 1 in table Search.PolicySearch.Result.Table contains value RI.Annex.Premium.PolicyNo in column Policy No
+And Select row 1 in Search.PolicySearch.Result.Table table
+And Click on Next button
+Then Premium Change breadcrumb is displayed
+
+Scenario: Change cover premiums in annexes for an Auto Casco Policy and check the new Premium values in Ceded Premiums.
+Given Premium Change breadcrumb is displayed
+And Click on xpath.Annex.CreateAnnex.Button button
+When Table Search.AnnexSearch.Result.Table has 1 rows
+And Click on Annex.Create.Reason.Button button
+And Table Search.AnnexSearch.Result.Table has 1 rows
+And Row 1 in table Search.AnnexSearch.Result.Table contains value 12 Premium Change in column Annex Type
+And Select Increase of IV from xpath.Annex.Reason.Dropdown dropdown
+And Click on Next button
+And Click on Coverages train stop
+And Current FES step is Coverages
+And Table Coverages.InsuredObject.Result.Table has 1 rows
+And Table Coverages.Cover.Result.Table has 2 rows
+And Get row number in table Coverages.Cover.Result.Table where Cover Name column contains value Road accident
+And Row rowNo in table Coverages.Cover.Result.Table contains value Cover.Amount.RoadAccident in column Premium
+And Select row rowNo in Coverages.Cover.Result.Table table and click on xpath.Change.Cover.Button element
+And I type Tariff.Percent.Value.1 in field xpath.Cover.Tariff.Percent.Input
+And Get row number in table Coverages.Cover.Result.Table where Cover Name column contains value Natural disasters
+And Row rowNo in table Coverages.Cover.Result.Table contains value Cover.Amount.NaturalDisasters in column Premium
+And Select row rowNo in Coverages.Cover.Result.Table table and click on xpath.Change.Cover2.Button element
+And I type Tariff.Percent.Value.2 in field xpath.Cover.Tariff.Percent.Input
+And Click on xpath.Main.Navigation.SaveButton.Button button
+And Click on xpath.MakeChanges.Button button
+And Click on xpath.Main.Buttons.Premium.Button button
+And Column Risk State in table Coverages.Cover.Result.Table contains value 0 Registered in 2 of rows
+And Column Risk State in table Coverages.Cover.Result.Table contains value 112 Annexed in 2 of rows
+And Click on Annex General train stop
+And Click on xpath.Annex.Confirm.Changes button
+And Row 1 in table Search.AnnexSearch.Result.Table contains value 0 Registered in column Annex State
+And Click on Insurance operations in navigation menu
+And Click on Reinsurance in navigation menu
+And Click on Ceded Premiums in navigation menu
+And Ceded Premiums breadcrumb is displayed
+And Enter value RI.Annex.Premium.PolicyNo in field xpath.Right.Navigation.Policy.No.Input and press key enter
+And I type 15,000,000 in field xpath.CededPremiums.DirectPremium.Input
+And I type Road accident in field xpath.CededPremiums.CoverDesc.Input
+And Enter value DUE in field xpath.CededPremiums.PremiumType.Input and press key enter
+And Click on xpath.Right.Navigation.Search.Button button
+And Table CededPremiums.Table has 6 rows
+And Column Direct Iv in table CededPremiums.Table contains value 15,000,000.000000 in 6 of rows
+And Get row number in table CededPremiums.Table where Ri Clause Type column contains value SP
+And Row rowNo in table CededPremiums.Table contains value Road.Accident.RI.Premium.Annex.SP in column RI Premium
+And Get row number in table CededPremiums.Table where Ri Clause Type column contains value QS
+And Row rowNo in table CededPremiums.Table contains value Road.Accident.RI.Premium.Annex.QS in column RI Premium
+And Get row number in table CededPremiums.Table where Ri Clause Type column contains value REXL and Ri Adjustment Rate column contains value RiAdjustmentRate.REXL.1
+And Row rowNo in table CededPremiums.Table contains value Road.Accident.RI.Premium.Annex.REXL.1 in column RI Premium
+And Get row number in table CededPremiums.Table where Ri Clause Type column contains value REXL and Ri Adjustment Rate column contains value RiAdjustmentRate.REXL.2
+And Row rowNo in table CededPremiums.Table contains value Road.Accident.RI.Premium.Annex.REXL.2 in column RI Premium
+And Get row number in table CededPremiums.Table where Ri Clause Type column contains value EXL and Ri Adjustment Rate column contains value RiAdjustmentRate.EXL.1
+And Row rowNo in table CededPremiums.Table contains value Road.Accident.RI.Premium.Annex.EXL.1 in column RI Premium
+And Get row number in table CededPremiums.Table where Ri Clause Type column contains value EXL and Ri Adjustment Rate column contains value RiAdjustmentRate.EXL.2
+And Row rowNo in table CededPremiums.Table contains value Road.Accident.RI.Premium.Annex.EXL.2 in column RI Premium
+And I type 10,000,000 in field xpath.CededPremiums.DirectPremium.Input
+And Enter value Natural disasters in field xpath.CededPremiums.CoverDesc.Input and press key enter
+And Click on xpath.Right.Navigation.Search.Button button
+And Table CededPremiums.Table has 6 rows
+And Column Direct Iv in table CededPremiums.Table contains value 10,000,000.000000 in 6 of rows
+And Get row number in table CededPremiums.Table where Ri Clause Type column contains value SP
+And Row rowNo in table CededPremiums.Table contains value Natural.Disasters.RI.Premium.Annex.SP in column RI Premium
+Then Get row number in table CededPremiums.Table where Ri Clause Type column contains value QS
+And Row rowNo in table CededPremiums.Table contains value Natural.Disasters.RI.Premium.Annex.QS in column RI Premium
+And Get row number in table CededPremiums.Table where Ri Clause Type column contains value REXL and Ri Adjustment Rate column contains value RiAdjustmentRate.REXL.1
+And Row rowNo in table CededPremiums.Table contains value Natural.Disasters.RI.Premium.Annex.REXL.1 in column RI Premium
+And Get row number in table CededPremiums.Table where Ri Clause Type column contains value REXL and Ri Adjustment Rate column contains value RiAdjustmentRate.REXL.2
+And Row rowNo in table CededPremiums.Table contains value Natural.Disasters.RI.Premium.Annex.REXL.2 in column RI Premium
+And Get row number in table CededPremiums.Table where Ri Clause Type column contains value  and Ri Adjustment Rate column contains value RiAdjustmentRate.EXL.1
+And Row rowNo in table CededPremiums.Table contains value Natural.Disasters.RI.Premium.Annex.EXL.1 in column RI Premium
+And Get row number in table CededPremiums.Table where Ri Clause Type column contains value EXL and Ri Adjustment Rate column contains value RiAdjustmentRate.EXL.2
+And Row rowNo in table CededPremiums.Table contains value Natural.Disasters.RI.Premium.Annex.EXL.2 in column RI Premium
+And Click on GlobalClose.Button button

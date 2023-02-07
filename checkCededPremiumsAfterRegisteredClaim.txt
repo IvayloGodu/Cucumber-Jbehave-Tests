@@ -1,0 +1,105 @@
+Meta:
+@adf
+@ri
+@checkCededPremiumsAfterRegisteredClaim
+@RB-18949
+
+Narrative:
+As a back-office clerk
+I want to register a claim with catastrophic event for an Auto Casco policy
+So that I can check the new ceded claims values in the Ceded Claims
+PREREQUISITES:
+Created treaties 1 QSP, 1 REXL, 1 EXL
+Created policy and claim defined in policyNo.properties: RI.Claim.No
+
+Lifecycle:
+Before:
+Scope: STORY
+Given Home breadcrumb is displayed
+When Click on Insurance operations in navigation menu
+And Click on Claims in navigation menu
+And Click on Claim Processes in navigation menu
+And Click on Claim Settlement in navigation menu
+Then Claim Settlement breadcrumb is displayed
+
+Scenario: Scenario: Register claim with catastrophic event for an Auto Casco Policy and check the ceded claim values in Ceded Claims
+Given Claim Settlement breadcrumb is displayed
+And xpath.RightNavigation.ClaimNo.TextField element is displayed
+When Enter value RI.Claim.No in field xpath.RightNavigation.ClaimNo.TextField and press key enter
+And Table Claims.ResultTable.Table has 1 rows
+And Copy value from row 1 column Claim Id of table Claims.ResultTable.Table to claimId
+And Row 1 in table Claims.ResultTable.Table contains value RI.Claim.No in column Claim No
+And Click on xpath.General.Next.Span button
+And Request Details header is displayed
+And xpath.Claims.ClaimState.OutputText text field contains text Incomplete
+And Click on xpath.General.Next.Span button
+And Click on xpath.FNOL.ClaimDocuments.Link.Button button
+And Element xpath.Claim.ClaimDocuments.Section is present
+And Table FNOL.ClaimDocuments.Table has 4 rows
+And Select row 1 in table FNOL.ClaimDocuments.Table and select option Available from dropdown xpath.Claim.Documents.Dropdown
+And Select row 2 in FNOL.ClaimDocuments.Table table and click on xpath.FNOL.Documents.DocState.NotAvailable element
+And Select row 2 in table FNOL.ClaimDocuments.Table and select option Available from dropdown xpath.Claim.Documents.Dropdown
+And Select row 3 in FNOL.ClaimDocuments.Table table and click on xpath.FNOL.Documents.DocState.NotAvailable element
+And Select row 3 in table FNOL.ClaimDocuments.Table and select option Available from dropdown xpath.Claim.Documents.Dropdown
+And Select row 4 in FNOL.ClaimDocuments.Table table and click on xpath.FNOL.Documents.DocState.NotAvailable element
+And Select row 4 in table FNOL.ClaimDocuments.Table and select option Available from dropdown xpath.Claim.Documents.Dropdown
+And Click on xpath.General.Next.Span button
+And Click on xpath.Claim.Objects.Eligibility1.Input element
+And Click on xpath.Claim.Objects.Eligibility2.Input element
+And Click on xpath.Claim.Objects.Eligibility3.Input element
+And Click on xpath.Claim.ConfirmObject.Button button
+And xpath.FNOL.ClaimState.OutputText text field contains text Open
+And Click on xpath.General.Next.Span button
+And xpath.Claim.Estimators.Screen element is displayed
+And Click on xpath.General.Next.Span button
+And Claim Inspections header is displayed
+And xpath.Claim.ClaimInspections.RecordStatus.OutputText text field contains text Open
+And xpath.Claim.Evaluation.ClaimInspections.ExpertSum.Input text field contains text 10,000,000
+And Select Partial losses from xpath.FNOL.ClaimInspections.LossSize.Dropdown dropdown
+And Click on xpath.Claim.WOP.Confirm.Button button
+And xpath.Claim.ClaimInspections.RecordStatus.OutputText text field contains text Confirmed
+And Click on xpath.General.Next.Span button
+And Indemnity calculation header is displayed
+And xpath.Status.Input text field contains text Open
+And xpath.Claims.Requested.Amount.Input text field contains text 10,000,000
+And Click on FNOL.ClaimObjectsDscr.Calculate.Button button
+And xpath.FNOL.ClaimObjectsDscr.ConfirmedAmount.Input text field contains text 10,000,000
+And Click on xpath.Confirm.Button button
+And xpath.Status.Input text field contains text Confirmed
+And Click on xpath.General.Next.Span button
+And Element xpath.ChoosePayment.Screen is present
+And Select Manual payment from xpath.ChoosePayment.Dropdown dropdown
+And Click on xpath.General.Next.Span button
+And Reports List header is displayed
+And Enter value EUR in field FNOL.DocladScreen.Currency.Input
+And Click on xpath.General.Next.Span button
+And Payment Report Details header is displayed
+And xpath.Claim.Payments.Object1.PaySum text field contains text 10,000,000
+And xpath.FNOL.ReportState.OutputText text field contains text Incomplete
+And xpath.FNOL.PaymentState.OutputText text field contains text Incomplete
+And Click on xpath.FNOL.PaymentReportDetails.Convert.Button button
+And xpath.FNOL.ReportState.OutputText text field contains text Registered
+And xpath.FNOL.PaymentState.OutputText text field contains text Registered
+And Click on xpath.Confirm.Button button
+Then xpath.FNOL.ReportState.OutputText text field contains text Confirmed
+And xpath.FNOL.PaymentState.OutputText text field contains text Confirmed
+And Click on xpath.General.Next.Span button
+And Click on xpath.General.Next.Span button
+And xpath.Claim.ProcessCompleted.Popup element is displayed
+And Click on xpath.Process.Ok.Button button
+And Wait 5 seconds until element xpath.Claim.ProcessCompleted.Popup is not visible
+And Click on Insurance operations in navigation menu
+And Click on Reinsurance in navigation menu
+And Click on Ceded Claims in navigation menu
+And Ceded Claims breadcrumb is displayed
+And Enter value claimId in field xpath.CededClaims.ClaimSearch.FilterClaimId.Input and press key enter
+And Table CededPremiums.Table has 4 rows
+And Get row number in table CededPremiums.Table where Ri Clause Type column contains value SP
+And Row rowNo in table CededPremiums.Table contains value 400,000 in column RI Amount
+And Get row number in table CededPremiums.Table where Ri Clause Type column contains value QS
+And Row rowNo in table CededPremiums.Table contains value 40,000 in column RI Amount
+And Get row number in table CededPremiums.Table where Ri Clause Type column contains value EXL and Ritrt Ri Layer column contains value 1
+And Row rowNo in table CededPremiums.Table contains value 1,225,000 in column RI Amount
+And Get row number in table CededPremiums.Table where Ri Clause Type column contains value EXL and Ri Ceded column contains value 5.000000
+And Row rowNo in table CededPremiums.Table contains value 500,000 in column RI Amount
+And Click on GlobalClose.Button button

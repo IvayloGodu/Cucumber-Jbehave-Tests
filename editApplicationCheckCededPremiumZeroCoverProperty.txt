@@ -1,0 +1,79 @@
+Meta:
+@adf
+@ri
+@editApplicationCheckCededPremiumZeroCoverProperty
+@RB-14018
+
+Narrative:
+As a back-office clerk
+I want to edit/register a Property Insurance policy with 2 covers - Flexa and Flood.
+The Flood cover should be with Premium = 0 EUR
+So that I can check that the cover premiums values in INSIS main menu Reinsurance/Ceded premiums are correct.
+
+Lifecycle:
+Before:
+Scope: STORY
+Given Home breadcrumb is displayed
+When Click on Insurance operations in navigation menu
+And Click on Policies in navigation menu
+And Click on Application Edit in navigation menu
+Then Application Edit breadcrumb is displayed
+
+Scenario: Edit Auto Casco Policy and check the RI Premium values
+Given Application Edit breadcrumb is displayed
+When Enter value RI.CededPremium.Zero.Cover.PolicyNo in field Right.Navigation.SearchPolicy.No.InputText and press key Enter
+And Table Search.PolicySearch.Result.Table has 1 rows
+And Row 1 in table Search.PolicySearch.Result.Table contains value RI.CededPremium.Zero.Cover.PolicyNo in column Policy No
+And Copy value from row 1 column Insr Begin of table Search.PolicySearch.Result.Table to insrBeginDate
+And Select row 1 in Search.PolicySearch.Result.Table table
+And Click on Next button
+And Current FES step is Policy General
+And Click on Coverages train stop
+And Current FES step is Coverages
+And Table Coverages.InsuredObject.Result.Table has 1 rows
+And Table Coverages.Cover.Result.Table has 2 rows
+And Click on xpath.Main.Buttons.Premium.Button button
+And Get row number in table Coverages.Cover.Result.Table where Cover Name column contains value Flood
+And Row rowNo in table Coverages.Cover.Result.Table contains value 0 in column Tariff Percent
+And Row rowNo in table Coverages.Cover.Result.Table contains value .00 in column Premium
+And Click on Convert Application train stop
+And Current FES step is  Convert Application
+And Element xpath.Application.PolicyStateName.OutputText contains text Prepare Application
+And Click on xpath.Application.ConfirmApplication.Button button
+And Element xpath.Application.PolicyStateName.OutputText contains text Application
+And Click on xpath.Application.ConvertApplication.Button button
+And Element xpath.Application.PolicyStateName.OutputText contains text Registered (contract)
+And Click on Insurance operations in navigation menu
+And Click on Reinsurance in navigation menu
+And Click on Reinsurance contracts in navigation menu
+And Reinsurance contracts breadcrumb is displayed
+And Table ReinsuranceContracts.Treaty.Result.Table has no row
+And I type ZeroCover.Treaty.No in field xpath.RightNavigation.SearchTreatyNo.InputText
+And Press enter
+Then Table ReinsuranceContracts.Treaty.Result.Table has 1 rows
+And Row 1 in table ReinsuranceContracts.Treaty.Result.Table contains value ZeroCover.Treaty.No in column Treaty No
+And Copy value from row 1 column Treaty Id of table ReinsuranceContracts.Treaty.Result.Table to TreatyId
+Then Click on Ceded Premiums in navigation menu
+And Ceded Premiums breadcrumb is displayed
+And Enter value RI.CededPremium.Zero.Cover.PolicyNo in field xpath.Right.Navigation.Policy.No.Input and press key Enter
+And Enter value DUE in field xpath.CededPremiums.PremiumType.Input
+And Enter value TreatyId in field xpath.CededPremiums.TreatyId.Input and press key enter
+And Click on xpath.Right.Navigation.Search.Button button
+And Table CededPremiums.Table has 4 rows
+And Column Direct Iv in table CededPremiums.Table contains value 100,000.000000	 in 4 of rows
+And Column Cover Type in table CededPremiums.Table contains value FLEXA in 2 of rows
+And Column Cover Type in table CededPremiums.Table contains value FLOOD in 2 of rows
+And Get row number in table CededPremiums.Table where Cover Type column contains value FLEXA and Cover From column contains value insrBeginDate
+And Row rowNo in table CededPremiums.Table contains value 5,000.000000 in column Direct Premium
+And Row rowNo in table CededPremiums.Table contains value 36.000000 in column Ri Premium
+And Get row number in table CededPremiums.Table where Cover Type column contains value FLOOD and Cover From column contains value insrBeginDate
+And Row rowNo in table CededPremiums.Table contains value 0.000000 in column Direct Premium
+And Row rowNo in table CededPremiums.Table contains value 60.000000 in column Ri Premium
+And Update date insrBeginDate add 12 months
+And Get row number in table CededPremiums.Table where Cover Type column contains value FLEXA and Cover From column contains value modifiedDate
+And Row rowNo in table CededPremiums.Table contains value 2,500.000000 in column Direct Premium
+And Row rowNo in table CededPremiums.Table contains value 18.000000 in column Ri Premium
+And Get row number in table CededPremiums.Table where Cover Type column contains value FLOOD and Cover From column contains value modifiedDate
+And Row rowNo in table CededPremiums.Table contains value 0.000000 in column Direct Premium
+And Row rowNo in table CededPremiums.Table contains value 30.000000 in column Ri Premium
+And Click on GlobalClose.Button button

@@ -1,0 +1,116 @@
+Meta:
+@adf
+@ri
+@createApplicationCheckCededPremium
+
+
+Narrative:
+As a user
+I want to create a Property Insurance policy for a client with tariff rule 30/360 - annual installments
+So that I can check the ceded premium
+
+Lifecycle:
+Before:
+Scope: STORY
+Given Home breadcrumb is displayed
+When Click on Insurance operations in navigation menu
+And Click on Policies in navigation menu
+And Click on Application in navigation menu
+And Common Conditions header is displayed
+Then Application breadcrumb is displayed
+And Get INSIS open date and save it to variable openDate
+And Update date openDate add 15 months
+
+Scenario: Create Property Insurance policy with tariff rule 30/360 - annual installments
+Given Application breadcrumb is displayed
+When Enter value Client.PID in field Main.Navigation.SearchClient.PID.InputText and press key enter
+And Table ClientsTable.Table has 1 rows
+And Row 1 in table ClientsTable.Table contains value Client.PID in column PID
+And Click on Next button
+And Search Insurance Type header is displayed
+And Enter value ProductPropertyRI in field InsuranceType.ProductSelection.InsuranceType.InputText and press key enter
+And Select row 1 in InsuranceType.ProductSelection.Result.Table table
+And Click on Next button
+And Search Agent header is displayed
+And Select row 1 in Search.Agent.Result.Table table
+And Click on Next button
+And Wait 10 seconds until xpath.PolicyGeneral.PID.TextField is present
+And Current FES step is Policy General
+And Enter value openDate in field xpath.PolicyGeneral.ConclusionDate.InputText
+And Enter value openDate in field xpath.PolicyGeneral.DateGiven.InputText
+And Enter value 15 in field xpath.PolicyGeneral.InsrDuration.Number.InputFiled
+And Select month(s) from xpath.PolicyGeneral.InsrDuration.Dropdown dropdown
+And Select 30/360 from xpath.PolicyTariffRule.Dropdown dropdown
+And Click on xpath.Main.Navigation.SaveButton.Button button
+And xpath.PolicyGeneral.InsrEnd.InputText text field contains text modifiedDate
+And Wait 10 seconds for xpath.General.Next.Button to be enabled and click
+And Current FES step is Coverages
+And Table Coverages.InsuredObject.Result.Table has no row
+And Click on Coverages.InsuredObject.AddObject.Button button
+And Object Type header is displayed
+And Click on xpath.Coverages.InsuredObjectType.Property element
+And Click on OK.Button button
+And Wait 5 seconds until xpath.Coverages.InsuredObject.Address.TextArea is present
+And Enter value PostCode in field xpath.Coverages.InsuredObject.Popup.PostCode.TextField
+And Enter value Country in field xpath.Coverages.InsuredObject.Popup.Country.TextField
+And Enter value City in field xpath.Coverages.InsuredObject.Popup.City.TextField
+And Click on xpath.Coverages.InsuredObject.Next.Button button
+And Wait 5 seconds until xpath.Coverages.InsuredObject.Popup.PropertyKind.Dropdown is present
+And Select PropertyKind from xpath.Coverages.InsuredObject.Popup.PropertyKind.Dropdown dropdown
+And Select PropertyType from xpath.Coverages.InsuredObject.Popup.PropertyType.Dropdown dropdown
+And Click on xpath.Coverages.InsuredObject.Popup.Save.Button element
+And Press escape
+And Wait for 2 seconds
+And Table Coverages.InsuredObject.Result.Table has 1 rows
+And Row 1 in table Coverages.InsuredObject.Result.Table contains value PropertyType in column Object Name
+And Select row 1 in Coverages.InsuredObject.Result.Table table and click on Coverages.InsuredObject.EditRecord.Button button
+And Select row 1 in Coverages.InsuredObject.Result.Table table and enter value InsuredValue in column Insured Value
+And Table Coverages.Cover.Result.Table has 1 rows
+And Row 1 in table Coverages.Cover.Result.Table contains value Policy.Property.CoverName in column Cover Name
+And Select row 1 in Coverages.Cover.Result.Table table and click on Coverages.Cover.EditRecord.Button button
+And Select row 1 in Coverages.Cover.Result.Table table and enter value InsurancePremium in column Tariff Percent
+And Select row 1 in table Coverages.Cover.Result.Table and select option Flat premium (annual) from dropdown xpath.Coverages.Cover.ManualPremiumDimension.Dropdown
+And Select row 1 in Coverages.Cover.Result.Table table and enter value InsuredValue in column Insured Value
+And Click on xpath.Main.Buttons.Premium.Button button
+And Wait 5 seconds for xpath.Main.Buttons.Premium.Button to be enabled and click
+And Row 1 in table Coverages.Cover.Result.Table contains value 18,750.00 in column Premium
+And Click on Payment Plan train stop
+And Current FES step is Payment Plan
+And Table PaymentPlan.DuePremiums.Table has no row
+And Click on xpath.PaymentPlan.CreatePlan button
+And Click on xpath.PaymentPlan.PlanFractions button
+And Table PaymentPlan.DuePremiums.Table has row
+And Table PaymentPlan.DuePremiums.Table has row with 3750
+And Table PaymentPlan.DuePremiums.Table has row with 15000
+And Click on GlobalClose.Button button
+And Click on Convert Application train stop
+And Current FES step is Convert Application
+And Element xpath.Application.PolicyStateName.OutputText contains text Prepare Application
+And Click on xpath.Main.Buttons.Premium.Button button
+And Click on xpath.Application.Consistency.Button button
+And Click on xpath.Application.ConfirmApplication.Button button
+And Element xpath.Application.PolicyStateName.OutputText contains text Application
+And Click on xpath.Application.ConvertApplication.Button button
+And Copy value from xpath.Application.PolicyNo.OutputText to PolicyNo
+Then Element xpath.Application.PolicyStateName.OutputText contains text Registered (contract)
+And Click on Insurance operations in navigation menu
+And Click on Reinsurance in navigation menu
+And Click on Ceded Premiums in navigation menu
+And Ceded Premiums breadcrumb is displayed
+And Paste PolicyNo in xpath.Right.Navigation.SearchPolicy.Id.InputText and press enter
+And Table CededPremiums.Table has row
+And Enter value QS in field xpath.CededPremiums.TreatySubtype.Input and press key enter
+And Get row number in table CededPremiums.Table where Direct Premium column contains value 3,750.000000
+And Row rowNo in table CededPremiums.Table contains value 1,125.000000 in column Ri Premium
+And Get row number in table CededPremiums.Table where Direct Premium column contains value 15,000.000000
+And Row rowNo in table CededPremiums.Table contains value 4,500.000000 in column Ri Premium
+And Enter value RXL in field xpath.CededPremiums.TreatySubtype.Input and press key enter
+And Get row number in table CededPremiums.Table where Direct Premium column contains value 3,750.000000
+And Row rowNo in table CededPremiums.Table contains value 131.250000 in column Ri Premium
+And Get row number in table CededPremiums.Table where Direct Premium column contains value 15,000.000000
+And Row rowNo in table CededPremiums.Table contains value 525.000000 in column Ri Premium
+And Enter value EXL in field xpath.CededPremiums.TreatySubtype.Input and press key enter
+And Get row number in table CededPremiums.Table where Direct Premium column contains value 15,000.000000
+And Row rowNo in table CededPremiums.Table contains value 300.000000 in column Ri Premium
+And Get row number in table CededPremiums.Table where Direct Premium column contains value 3,750.000000
+And Row rowNo in table CededPremiums.Table contains value 75.000000 in column Ri Premium

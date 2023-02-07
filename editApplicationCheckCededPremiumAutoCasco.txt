@@ -1,0 +1,81 @@
+Meta:
+@adf
+@ri
+@editApplicationCheckCededPremiumAutoCasco
+@RB-18699
+
+Narrative:
+As a back-office clerk
+I want to edit/register an Auto Casco policy for a client
+So that I can check the covers premiums values in INSIS main menu Reinsurance/Ceded premiums .
+PREREQUISITES:
+Created treaties 1 QSP, 1REXL, 1 EXL and use the policy from operational data (RI.CededPremium.PolicyNo=ATRICASCO).
+
+Lifecycle:
+Before:
+Scope: STORY
+Given Home breadcrumb is displayed
+When Click on Insurance operations in navigation menu
+And Click on Policies in navigation menu
+And Click on Application Edit in navigation menu
+Then Application Edit breadcrumb is displayed
+
+Scenario: Edit Auto Casco Policy and check the RI Premium values
+Given Application Edit breadcrumb is displayed
+When Enter value RI.CededPremium.PolicyNo in field Right.Navigation.SearchPolicy.No.InputText and press key Enter
+And Table Search.PolicySearch.Result.Table has 1 rows
+And Row 1 in table Search.PolicySearch.Result.Table contains value RI.CededPremium.PolicyNo in column Policy No
+And Select row 1 in Search.PolicySearch.Result.Table table
+And Click on Next button
+And Current FES step is Policy General
+And Click on Coverages train stop
+And Current FES step is Coverages
+And Table Coverages.InsuredObject.Result.Table has 1 rows
+And Table Coverages.Cover.Result.Table has 2 rows
+And Click on xpath.Main.Buttons.Premium.Button button
+And Get row number in table Coverages.Cover.Result.Table where Cover Description column contains value Road accident
+And Row rowNo in table Coverages.Cover.Result.Table contains value Cover.Amount.RoadAccident in column Premium
+And Get row number in table Coverages.Cover.Result.Table where Cover Description column contains value Natural disasters
+And Row rowNo in table Coverages.Cover.Result.Table contains value Cover.Amount.NaturalDisasters in column Premium
+And Click on Convert Application train stop
+And Current FES step is  Convert Application
+And Element xpath.Application.PolicyStateName.OutputText contains text Prepare Application
+And Click on xpath.Application.Consistency.Button button
+And Click on xpath.Application.ConfirmApplication.Button button
+And Element xpath.Application.PolicyStateName.OutputText contains text Application
+And Click on xpath.Application.ConvertApplication.Button button
+And Element xpath.Application.PolicyStateName.OutputText contains text Registered (contract)
+And Click on Insurance operations in navigation menu
+And Click on Reinsurance in navigation menu
+And Click on Ceded Premiums in navigation menu
+And Ceded Premiums breadcrumb is displayed
+And Enter value RI.CededPremium.PolicyNo in field xpath.Right.Navigation.Policy.No.Input and press key Enter
+And Enter value DUE in field xpath.CededPremiums.PremiumType.Input and press key enter
+And Click on xpath.Right.Navigation.Search.Button button
+And Table CededPremiums.Table has 12 rows
+And Column Direct Iv in table CededPremiums.Table contains value DirectIv.Casco in 12 of rows
+Then Get row number in table CededPremiums.Table where Cover Type column contains value NATDIS and Ri Clause Type column contains value QS
+And Row rowNo in table CededPremiums.Table contains value NATDIS.CASCO.RI.Premium.QS in column RI Premium
+And Get row number in table CededPremiums.Table where Cover Type column contains value NATDIS and Ri Clause Type column contains value SP
+And Row rowNo in table CededPremiums.Table contains value NATDIS.CASCO.RI.Premium.SP in column RI Premium
+And Get row number in table CededPremiums.Table where Cover Type column contains value NATDIS and Ri Adjustment Rate column contains value RiAdjustmentRate.REXL.1
+And Row rowNo in table CededPremiums.Table contains value NATDIS.CASCO.RI.Premium.REXL.1 in column RI Premium
+And Get row number in table CededPremiums.Table where Cover Type column contains value NATDIS and Ri Adjustment Rate column contains value RiAdjustmentRate.REXL.2
+And Row rowNo in table CededPremiums.Table contains value NATDIS.CASCO.RI.Premium.REXL.2 in column RI Premium
+And Get row number in table CededPremiums.Table where Cover Type column contains value NATDIS and Ri Adjustment Rate column contains value RiAdjustmentRate.EXL.1
+And Row rowNo in table CededPremiums.Table contains value NATDIS.CASCO.RI.Premium.EXL.1 in column RI Premium
+And Get row number in table CededPremiums.Table where Cover Type column contains value NATDIS and Ri Adjustment Rate column contains value RiAdjustmentRate.EXL.2
+And Row rowNo in table CededPremiums.Table contains value NATDIS.CASCO.RI.Premium.EXL.2 in column RI Premium
+And Get row number in table CededPremiums.Table where Cover Type column contains value ROADACC and Ri Clause Type column contains value SP
+And Row rowNo in table CededPremiums.Table contains value ROADACC.CASCO.RI.Premium.SP in column RI Premium
+And Get row number in table CededPremiums.Table where Cover Type column contains value ROADACC and Ri Clause Type column contains value QS
+And Row rowNo in table CededPremiums.Table contains value ROADACC.CASCO.RI.Premium.QS in column RI Premium
+And Get row number in table CededPremiums.Table where Cover Type column contains value ROADACC and Ri Adjustment Rate column contains value RiAdjustmentRate.REXL.1
+And Row rowNo in table CededPremiums.Table contains value ROADACC.CASCO.RI.Premium.REXL.1 in column RI Premium
+And Get row number in table CededPremiums.Table where Cover Type column contains value ROADACC and Ri Adjustment Rate column contains value RiAdjustmentRate.REXL.2
+And Row rowNo in table CededPremiums.Table contains value ROADACC.CASCO.RI.Premium.REXL.2 in column RI Premium
+And Get row number in table CededPremiums.Table where Cover Type column contains value ROADACC and Ri Adjustment Rate column contains value RiAdjustmentRate.EXL.1
+And Row rowNo in table CededPremiums.Table contains value ROADACC.CASCO.RI.Premium.EXL.1 in column RI Premium
+And Get row number in table CededPremiums.Table where Cover Type column contains value ROADACC and Ri Adjustment Rate column contains value RiAdjustmentRate.EXL.2
+And Row rowNo in table CededPremiums.Table contains value ROADACC.CASCO.RI.Premium.EXL.2 in column RI Premium
+And Click on GlobalClose.Button button
